@@ -6,7 +6,7 @@ void main() {
 }
 
 class BookingApp extends StatelessWidget {
-  const BookingApp({Key? key}) : super(key: key);
+  const BookingApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class BookingApp extends StatelessWidget {
 
 // Screen 1: Sign In
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  const SignInScreen({super.key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -138,7 +138,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
 // Screen 2: Sign Up
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  const SignUpScreen({super.key});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -245,7 +245,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 // Screen 3: Table Selection
 class TableSelectionScreen extends StatefulWidget {
-  const TableSelectionScreen({Key? key}) : super(key: key);
+  const TableSelectionScreen({super.key});
 
   @override
   State<TableSelectionScreen> createState() => _TableSelectionScreenState();
@@ -375,7 +375,7 @@ class _TableSelectionScreenState extends State<TableSelectionScreen> {
 // Screen 4: Game Confirmation
 class GameConfirmationScreen extends StatefulWidget {
   final String table;
-  const GameConfirmationScreen({Key? key, required this.table}) : super(key: key);
+  const GameConfirmationScreen({super.key, required this.table});
 
   @override
   State<GameConfirmationScreen> createState() => _GameConfirmationScreenState();
@@ -542,7 +542,7 @@ class PaymentScreen extends StatelessWidget {
   final int hours;
   final int amount;
 
-  const PaymentScreen({Key? key, required this.table, required this.hours, required this.amount}) : super(key: key);
+  const PaymentScreen({super.key, required this.table, required this.hours, required this.amount});
 
   @override
   Widget build(BuildContext context) {
@@ -646,7 +646,7 @@ class PaymentScreen extends StatelessWidget {
 // Screen 6: Timer
 class TimerScreen extends StatefulWidget {
   final int hours;
-  const TimerScreen({Key? key, required this.hours}) : super(key: key);
+  const TimerScreen({super.key, required this.hours});
 
   @override
   State<TimerScreen> createState() => _TimerScreenState();
