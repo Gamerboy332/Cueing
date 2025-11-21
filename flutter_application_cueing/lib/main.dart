@@ -6,7 +6,7 @@ void main() {
 }
 
 class BookingApp extends StatelessWidget {
-  const BookingApp({Key? key}) : super(key: key);
+  const BookingApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class BookingApp extends StatelessWidget {
 
 // Screen 1: Sign In
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  const SignInScreen({super.key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -41,59 +41,93 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF6B00FF), // Purple background
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Row(
+              const SizedBox(height: 40),
+
+              // Logo + App Name
+              Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Text('B', style: TextStyle(color: Color(0xFF6B00FF), fontWeight: FontWeight.bold)),
+                    radius: 24,
+                    backgroundColor: Colors.black,
+                    child: Text('8', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                    // Replace with Image.asset('assets/logo_8.png') if available
                   ),
-                  SizedBox(width: 12),
-                  Text('CUEING', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                  const SizedBox(width: 12),
+                  const Text(
+                    'CUEING',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      letterSpacing: 2,
+                    ),
+                  ),
                 ],
               ),
+
               const SizedBox(height: 60),
+
+              // Username Field
               TextField(
                 controller: _usernameController,
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: 'Username',
+                  hintText: 'Username',
+                  hintStyle: const TextStyle(color: Colors.white70),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Colors.black,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
                 ),
               ),
+
               const SizedBox(height: 16),
+
+              // Password Field
               TextField(
                 controller: _passwordController,
                 obscureText: true,
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: 'Password',
+                  hintText: 'Password',
+                  hintStyle: const TextStyle(color: Colors.white70),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Colors.black,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
                 ),
               ),
-              const SizedBox(height: 24),
-              const Text('Forgot Password?', textAlign: TextAlign.center, style: TextStyle(color: Colors.white70)),
-              const SizedBox(height: 24),
+
+              const SizedBox(height: 16),
+
+              // Forgot Password
+              const Text(
+                'Forgot Password?',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+
+              const SizedBox(height: 32),
+
+              // Sign Up Button
               ElevatedButton(
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SignUpScreen())),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: const Color(0xFF6B00FF),
+                  backgroundColor: const Color(0xFF4CAF50), // Green
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 child: const Text('Sign Up', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
+
+              const Spacer(),
             ],
           ),
         ),
@@ -104,7 +138,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
 // Screen 2: Sign Up
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  const SignUpScreen({super.key});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -121,32 +155,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
     'password': TextEditingController(),
   };
 
-  Widget _buildTextField(String label, String key, {bool isPassword = false}) {
+  Widget _buildTextField(String hint, String key, {bool isPassword = false}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextField(
         controller: _controllers[key],
         obscureText: isPassword,
+        style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
-          labelText: label,
+          hintText: hint,
+          hintStyle: const TextStyle(color: Colors.white70),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Colors.black,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-          floatingLabelBehavior: FloatingLabelBehavior.auto,
         ),
       ),
     );
   }
 
+  void _submitForm() {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => const TableSelectionScreen()));
+  }
+
+  void _cancelForm() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF6B00FF),
       appBar: AppBar(
         backgroundColor: const Color(0xFF6B00FF),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
+          onPressed: _cancelForm,
         ),
       ),
       body: SafeArea(
@@ -157,23 +201,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               const Text('SIGN UP', style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
               const SizedBox(height: 32),
-              _buildTextField('First Name', 'firstName'),
-              _buildTextField('Last Name', 'lastName'),
-              _buildTextField('Email', 'email'),
-              _buildTextField('Phone Number', 'phoneNumber'),
-              _buildTextField('Address', 'address'),
-              _buildTextField('Username', 'username'),
-              _buildTextField('Password', 'password', isPassword: true),
+              _buildTextField('Enter your first name', 'firstName'),
+              _buildTextField('Enter your last name', 'lastName'),
+              _buildTextField('your.email@example.com', 'email'),
+              _buildTextField('e.g., +1 555-123-4567', 'phoneNumber'),
+              _buildTextField('e.g., 123 Main St, Anytown', 'address'),
+              _buildTextField('Choose a unique username', 'username'),
+              _buildTextField('Create a strong password', 'password', isPassword: true),
               const SizedBox(height: 8),
+
+              // Submit Button (Green)
               ElevatedButton(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TableSelectionScreen())),
+                onPressed: _submitForm,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: const Color(0xFF6B00FF),
+                  backgroundColor: const Color(0xFF4CAF50), // Green
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 child: const Text('Submit', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ),
+
+              const SizedBox(height: 12),
+
+              // Cancel Button (Red)
+              ElevatedButton(
+                onPressed: _cancelForm,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                ),
+                child: const Text('Cancel', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ],
           ),
@@ -185,7 +245,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 // Screen 3: Table Selection
 class TableSelectionScreen extends StatefulWidget {
-  const TableSelectionScreen({Key? key}) : super(key: key);
+  const TableSelectionScreen({super.key});
 
   @override
   State<TableSelectionScreen> createState() => _TableSelectionScreenState();
@@ -211,26 +271,56 @@ class _TableSelectionScreenState extends State<TableSelectionScreen> {
     );
   }
 
+  void _confirmSelection() {
+    if (selectedTable != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => GameConfirmationScreen(table: selectedTable!)),
+      );
+    }
+  }
+
+  void _cancelSelection() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF6B00FF),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text('TABLE', style: TextStyle(color: Color(0xFF6B00FF), fontSize: 12, fontWeight: FontWeight.bold)),
+              // Logo
+              const CircleAvatar(
+                radius: 24,
+                backgroundColor: Colors.black,
+                child: Text('8', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
               ),
-              const SizedBox(height: 8),
-              const Text('TABLE\nSELECTION', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold, height: 1.2)),
+              const SizedBox(height: 16),
+
+              // Title
+              RichText(
+                text: const TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'TABLE ',
+                      style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: 'SELECTION',
+                      style: TextStyle(color: Colors.lightBlueAccent, fontSize: 32, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+
               const SizedBox(height: 32),
+
+              // Table Grid
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -240,18 +330,38 @@ class _TableSelectionScreenState extends State<TableSelectionScreen> {
                   children: List.generate(10, (i) => _buildTableButton('TABLE ${i + 1}')),
                 ),
               ),
+
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: selectedTable != null
-                    ? () => Navigator.push(context, MaterialPageRoute(builder: (_) => GameConfirmationScreen(table: selectedTable!)))
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: const Color(0xFF6B00FF),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                ),
-                child: const Text('Proceed to confirmation', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+
+              // Confirm and Cancel Buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: selectedTable != null ? _confirmSelection : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4CAF50), // Green
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: const Text('Confirm', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _cancelSelection,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: const Text('Cancel', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -261,10 +371,11 @@ class _TableSelectionScreenState extends State<TableSelectionScreen> {
   }
 }
 
+
 // Screen 4: Game Confirmation
 class GameConfirmationScreen extends StatefulWidget {
   final String table;
-  const GameConfirmationScreen({Key? key, required this.table}) : super(key: key);
+  const GameConfirmationScreen({super.key, required this.table});
 
   @override
   State<GameConfirmationScreen> createState() => _GameConfirmationScreenState();
@@ -287,31 +398,68 @@ class _GameConfirmationScreenState extends State<GameConfirmationScreen> {
     _updateAmount(1);
   }
 
+  void _proceedToPayment() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PaymentScreen(table: widget.table, hours: hours, amount: amount),
+      ),
+    );
+  }
+
+  void _backToTables() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF6B00FF),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                child: const Text('TABLE', style: TextStyle(color: Color(0xFF6B00FF), fontSize: 12, fontWeight: FontWeight.bold)),
+              // Top Row: Table Button + Logo
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.lightBlueAccent,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    ),
+                    child: Text(widget.table, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                  const CircleAvatar(
+                    radius: 24,
+                    backgroundColor: Colors.black,
+                    child: Text('8', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              const Text('GAME\nCONFIRMATION', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold, height: 1.2)),
+
+              const SizedBox(height: 24),
+
+              const Text('GAME CONFIRMATION', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+
               const SizedBox(height: 32),
+
               const Text('GAME TIME', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
+
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
                 child: Text('$hours HOUR', textAlign: TextAlign.center, style: const TextStyle(color: Color(0xFF6B00FF), fontSize: 18, fontWeight: FontWeight.bold)),
               ),
+
               const SizedBox(height: 16),
+
               Row(
                 children: [
                   Expanded(
@@ -339,22 +487,45 @@ class _GameConfirmationScreenState extends State<GameConfirmationScreen> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 24),
+
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
-                child: Text('TOTAL AMOUNT\n₱$amount', textAlign: TextAlign.center, style: const TextStyle(color: Color(0xFF6B00FF), fontSize: 18, fontWeight: FontWeight.bold, height: 1.5)),
+                child: Text('TOTAL AMOUNT\n₱$amount.00', textAlign: TextAlign.center, style: const TextStyle(color: Color(0xFF6B00FF), fontSize: 18, fontWeight: FontWeight.bold, height: 1.5)),
               ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentScreen(table: widget.table, hours: hours, amount: amount))),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: const Color(0xFF6B00FF),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                ),
-                child: const Text('Proceed to payment', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+
+              const SizedBox(height: 24),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _proceedToPayment,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4CAF50), // Green
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: const Text('Proceed to Payment', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _backToTables,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: const Text('Back to Tables', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -364,57 +535,100 @@ class _GameConfirmationScreenState extends State<GameConfirmationScreen> {
   }
 }
 
+
 // Screen 5: Payment
 class PaymentScreen extends StatelessWidget {
   final String table;
   final int hours;
   final int amount;
 
-  const PaymentScreen({Key? key, required this.table, required this.hours, required this.amount}) : super(key: key);
+  const PaymentScreen({super.key, required this.table, required this.hours, required this.amount});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF6B00FF),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                child: const Text('TABLE', style: TextStyle(color: Color(0xFF6B00FF), fontSize: 12, fontWeight: FontWeight.bold)),
+              // Top Row: Back + Table Label
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.lightBlueAccent,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    ),
+                    child: Text(table, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              const Text('PAYMENT', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+
+              const SizedBox(height: 24),
+
+              // Logo + Title
+              Column(
+                children: const [
+                  CircleAvatar(
+                    radius: 24,
+                    backgroundColor: Colors.black,
+                    child: Text('B', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                  ),
+                  SizedBox(height: 12),
+                  Text('PAYMENT', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+                ],
+              ),
+
               const SizedBox(height: 32),
+
+              // QR Scanner Box
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
+                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('QR Code\nScanner', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey[600], fontSize: 18)),
+                      const Icon(Icons.qr_code_scanner, size: 100, color: Colors.white),
                       const SizedBox(height: 16),
-                      Icon(Icons.qr_code_scanner, size: 100, color: Colors.grey[400]),
+                      Text('QR Code\nScanner', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey[300], fontSize: 18)),
                     ],
                   ),
                 ),
               ),
+
               const SizedBox(height: 24),
+
+              // Amount Box
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
-                child: Text('TOTAL AMOUNT\n₱$amount', textAlign: TextAlign.center, style: const TextStyle(color: Color(0xFF6B00FF), fontSize: 18, fontWeight: FontWeight.bold, height: 1.5)),
+                decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(8)),
+                child: Text(
+                  'Total amount\n₱${amount.toStringAsFixed(2)}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.lightBlueAccent, fontSize: 18, fontWeight: FontWeight.bold, height: 1.5),
+                ),
               ),
+
               const SizedBox(height: 16),
+
+              // PAID Button
               ElevatedButton(
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TimerScreen(hours: hours))),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: const Color(0xFF6B00FF),
+                  backgroundColor: const Color(0xFF4CAF50), // Green
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
@@ -428,10 +642,11 @@ class PaymentScreen extends StatelessWidget {
   }
 }
 
+
 // Screen 6: Timer
 class TimerScreen extends StatefulWidget {
   final int hours;
-  const TimerScreen({Key? key, required this.hours}) : super(key: key);
+  const TimerScreen({super.key, required this.hours});
 
   @override
   State<TimerScreen> createState() => _TimerScreenState();
@@ -466,6 +681,10 @@ class _TimerScreenState extends State<TimerScreen> {
     setState(() => _isRunning = false);
   }
 
+  void _newOrder() {
+    Navigator.pop(context); // Or navigate to a new order screen
+  }
+
   String _formatTime() {
     final hours = (_remainingSeconds ~/ 3600).toString().padLeft(2, '0');
     final minutes = ((_remainingSeconds % 3600) ~/ 60).toString().padLeft(2, '0');
@@ -482,41 +701,105 @@ class _TimerScreenState extends State<TimerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF6B00FF),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                child: const Text('TABLE', style: TextStyle(color: Color(0xFF6B00FF), fontSize: 12, fontWeight: FontWeight.bold)),
+              // Top Row: Table Label + Logo
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.lightBlueAccent,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    ),
+                    child: const Text('TABLE 1', style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                  const CircleAvatar(
+                    radius: 24,
+                    backgroundColor: Colors.black,
+                    child: Text('8', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                  ),
+                ],
               ),
+
+              const SizedBox(height: 24),
+
+              const Text('TIMER', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
-              const Text('TIMER', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 32),
-              const Text('LIVE TIME', textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 14)),
+              const Text('LIVE TIME', textAlign: TextAlign.center, style: TextStyle(color: Colors.redAccent, fontSize: 14)),
+
               const SizedBox(height: 16),
+
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
+                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12)),
                   child: Center(
-                    child: Text(_formatTime(), style: const TextStyle(color: Color(0xFF6B00FF), fontSize: 48, fontWeight: FontWeight.bold, fontFeatures: [FontFeature.tabularFigures()])),
+                    child: Text(
+                      _formatTime(),
+                      style: const TextStyle(
+                        color: Colors.deepPurpleAccent,
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        fontFeatures: [FontFeature.tabularFigures()],
+                      ),
+                    ),
                   ),
                 ),
               ),
+
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _isRunning ? _stopTimer : _startTimer,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: const Color(0xFF6B00FF),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                ),
-                child: Text(_isRunning ? 'STOP' : 'START', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+
+              // Button Row: START, STOP, NEW ORDER
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _startTimer,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4CAF50), // Green
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: const Text('START', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _stopTimer,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: const Text('STOP', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _newOrder,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: const Text('NEW ORDER', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -525,4 +808,5 @@ class _TimerScreenState extends State<TimerScreen> {
     );
   }
 }
+
 
