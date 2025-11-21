@@ -1,0 +1,10 @@
+{
+  // When opening the workspace root, point the Dart extension at the Flutter project
+  // Note: user can also open the subfolder directly. This helps when workspace root
+  // is the parent folder but the Flutter project lives in a subfolder.
+  "dart.openFirstFolderWhenWorkspaceIsEmpty": false,
+  "files.exclude": {
+    "**/.dart_tool": true,
+    "**/build": true
+  }
+}
